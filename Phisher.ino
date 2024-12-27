@@ -22,7 +22,7 @@ void loop() {
   }
 
   if(isPortalOpen()) {
-    portalLoop();
+    // portalLoop();
 
     tft.setCursor((tft.width() / 2) - (tft.textWidth("Click to close portal") / 2), 80);
     tft.print("Click to close portal");

@@ -1,12 +1,15 @@
 #pragma once
-#include <Arduino.h>
 #include "M5StickCPlus2.h"
 #include <M5GFX.h>
 #include <lgfx/v1/panel/Panel_ST7789.hpp>
 
-#include <WiFi.h>
-#include <WiFiClient.h>
-#include <WiFiAP.h>
+// #include <WiFi.h>
+// #include <WiFiClient.h>
+// #include <WiFiAP.h>
+
+#include <DNSServer.h>
+#include <ESPAsyncWebServer.h>
+#include <AsyncTCP.h> 
 
 #include <esp_wifi.h>
 
