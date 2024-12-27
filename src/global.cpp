@@ -4,7 +4,8 @@ void global_setup() {
     auto cfg = M5.config();
     StickCP2.begin(cfg);
 
-    Serial.begin(115200);
+    Serial.setTxBufferSize(1024);
+	  Serial.begin(115200);
     Serial.println();
 
     tft.setRotation(1);
