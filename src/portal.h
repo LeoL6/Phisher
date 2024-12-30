@@ -30,6 +30,7 @@ const String localIPURL = "http://192.168.4.1";
 const char ADMIN_PAGE[] PROGMEM = R"=====(
 
 <!DOCTYPE html>
+<meta charset="utf-8" />
 <html lang="en" class="js-focus-visible">
 
 <title>Admin</title>
@@ -172,7 +173,7 @@ const char ADMIN_PAGE[] PROGMEM = R"=====(
     
   </style>
 
-  <body style="background-color: #efefef" onload="process()">
+  <body style="background-color: #efefef">
   
     <header>
       <div class="navbar fixed-top">
@@ -206,9 +207,6 @@ const char ADMIN_PAGE[] PROGMEM = R"=====(
           <th colspan="1"><div class="heading">Password</div></th>
         </tr>
         <tr>
-          <td>0</td>
-          <td>cminer@gmail.com</td>
-          <td>idk123$</td>
         </tr>
       </table>
     </div>
@@ -229,36 +227,103 @@ const char ADMIN_PAGE[] PROGMEM = R"=====(
 
   <script language="javascript" type="text/javascript">
   
+  	var url = "ws://192.168.4.1:1337/";
+    
+    // This is called when the page finishes loading
+    function init() {
 
+        // Connect to WebSocket server
+        wsConnect(url);
+    }
+
+    // Call this to connect to the WebSocket server
+    function wsConnect(url) {
+
+        // Connect to WebSocket server
+        websocket = new WebSocket(url);
+
+        // Assign callbacks
+        websocket.onopen = function(evnt) { onOpen(evnt) };
+        websocket.onclose = function(evnt) { onClose(evnt) };
+        websocket.onmessage = function(evnt) { onMessage(evnt) };
+        websocket.onerror = function(evnt) { onError(evnt) };
+    }
+
+    // Called when a WebSocket connection is established with the server
+    function onOpen(evnt) {
+
+        // Log connection state
+        console.log("Connected");
+
+    }
+
+    // Called when the WebSocket connection is closed
+    function onClose(evnt) {
+
+        // Log disconnection state
+        console.log("Disconnected");
+
+        // Try to reconnect after a few seconds
+        setTimeout(function() { wsConnect(url) }, 2000);
+    }
+
+    // Called when a message is received from the server
+    function onMessage(evnt) {
+
+        // Print out our received message
+        console.log("Received: " + evnt.data);
+
+        // Update Cred-Table with new Credentials
+		const userCreds = evnt.data.split(":"); 
+        
+        insertCreds(userCreds[0], userCreds[1]);
+    }
+
+    // Called when a WebSocket error occurs
+    function onError(evnt) {
+        console.log("ERROR: " + evnt.data);
+    }
+
+    // Sends a message to the server (and prints it to the console)
+    function sendWSMessage(message) {
+        console.log("Sending: " + message);
+        websocket.send(message);
+    }
 
     function ButtonPress0() {
-    
+      sendWSMessage("changeSSID");
     }
 
     function ButtonPress1() {
-      insertCreds("User", "Password123$");
+      sendWSMessage("shutdown");
     }
 
 	function insertCreds(username, password){
       var parenttbl = document.getElementById("cred-table");
+
+      var index = document.getElementsByClassName("cred-row").length;
+
       var newel = document.createElement('tr');
-      
-      var elementid = document.getElementsByTagName("tr").length
       
       var indexTd = document.createElement('td');
       var userTd = document.createElement('td');
       var passTd = document.createElement('td');
       
-      indexTd.innerHTML = (elementid - 1)
-      userTd.innerHTML = username
-      passTd.innerHTML = password
+      indexTd.innerHTML = index;
+      userTd.innerHTML = username;
+      passTd.innerHTML = password;
       
       parenttbl.appendChild(newel);
       
       newel.appendChild(indexTd);
       newel.appendChild(userTd);
       newel.appendChild(passTd);
+      
+      newel.className = "cred-row";
     }
+    
+    // Call the init function as soon as the page loads
+    window.addEventListener("load", init, false);
   </script>
 
 </html>
