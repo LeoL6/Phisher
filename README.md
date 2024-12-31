@@ -1,5 +1,9 @@
 # Phisher
-Phishing firmware for the ESP32
+Phishing firmware for the ESP32 using: 
+* Access Point Captive Portal
+* [ESPAsyncWebServer](https://github.com/me-no-dev/ESPAsyncWebServer)
+* DNS Server 
+* [WebSockets](https://github.com/Links2004/arduinoWebSockets/tree/master)
 
 **DESIGNED FOR EDUCATIONAL PURPOSES**
 
