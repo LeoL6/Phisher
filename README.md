@@ -1,9 +1,9 @@
 # Phisher
 Phishing firmware for the ESP32
-(DESIGNED FOR EDUCATIONAL PURPOSES)
+**DESIGNED FOR EDUCATIONAL PURPOSES**
 
 # Captive Portal
-Main Captive Portal ( A fake google login page ( SIDENOTE IT IS VERY EASY TO CHANGE THE HTML TO WHATEVER PAGE ) )
+Main Captive Portal ( It is extremely easy to change this html to whatever page you want )
 
 ![Google Login Portal](https://github.com/user-attachments/assets/8c280ccd-db60-46c7-9ba9-daaac468b154)
 
