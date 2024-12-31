@@ -2,6 +2,14 @@
 Phishing firmware for the ESP32
 (DESIGNED FOR EDUCATIONAL PURPOSES)
 
+To change admin User and Password just go to the `portal.h` file and change them.
+
+````
+// ADMIN PAGE
+const char *auser = "admin";
+const char *apass = "password";
+````
+
 # Captive Portal
 Main Captive Portal ( A fake google login page ( SIDENOTE IT IS VERY EASY TO CHANGE THE HTML TO WHATEVER PAGE ) )
 
