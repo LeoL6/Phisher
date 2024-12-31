@@ -2,6 +2,12 @@
 Phishing firmware for the ESP32
 (DESIGNED FOR EDUCATIONAL PURPOSES)
 
+# Captive Portal
+Main Captive Portal ( A fake google login page ( SIDENOTE IT IS VERY EASY TO CHANGE THE HTML TO WHATEVER PAGE ) )
+
+![Google Login Portal](https://github.com/user-attachments/assets/8c280ccd-db60-46c7-9ba9-daaac468b154)
+
+# Admin Credentials
 To change Admin User and Password just go to the `portal.h` file and change them.
 
 ````
@@ -9,11 +15,6 @@ To change Admin User and Password just go to the `portal.h` file and change them
 const char *auser = "admin";
 const char *apass = "password";
 ````
-
-# Captive Portal
-Main Captive Portal ( A fake google login page ( SIDENOTE IT IS VERY EASY TO CHANGE THE HTML TO WHATEVER PAGE ) )
-
-![Google Login Portal](https://github.com/user-attachments/assets/8c280ccd-db60-46c7-9ba9-daaac468b154)
 
 # Admin Panel
 Reachable from captive portal on any device using specific logins
