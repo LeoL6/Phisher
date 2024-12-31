@@ -173,7 +173,7 @@ const char ADMIN_PAGE[] PROGMEM = R"=====(
     
   </style>
 
-  <body style="background-color: #efefef">
+  <body style="background-color: #efefef" onload="process()">
   
     <header>
       <div class="navbar fixed-top">
@@ -228,6 +228,20 @@ const char ADMIN_PAGE[] PROGMEM = R"=====(
   <script language="javascript" type="text/javascript">
   
   	var url = "ws://192.168.4.1:1337/";
+    
+    // global variable visible to all java functions
+    var xmlHttp=createXmlHttpObject();
+
+    // function to create XML object
+    function createXmlHttpObject(){
+      if(window.XMLHttpRequest){
+        xmlHttp=new XMLHttpRequest();
+      }
+      else{
+        xmlHttp=new ActiveXObject("Microsoft.XMLHTTP");
+      }
+      return xmlHttp;
+    }
     
     // This is called when the page finishes loading
     function init() {
@@ -320,6 +334,32 @@ const char ADMIN_PAGE[] PROGMEM = R"=====(
       newel.appendChild(passTd);
       
       newel.className = "cred-row";
+    }
+    
+    // function to handle the response from the ESP
+    function response(){
+      var dt = new Date();
+  
+      // get host date and time
+      document.getElementById("time").innerHTML = dt.toLocaleTimeString();
+      document.getElementById("date").innerHTML = dt.toLocaleDateString();
+    }
+  
+    // general processing code for the web page to ask for an XML steam
+    // this is actually why you need to keep sending data to the page to 
+    // force this call with stuff like this
+    // server.on("/xml", SendXML);
+    // otherwise the page will not request XML from the ESP, and updates will not happen
+    function process(){
+     
+     if(xmlHttp.readyState==0 || xmlHttp.readyState==4) {
+        xmlHttp.open("PUT","xml",true);
+        xmlHttp.onreadystatechange=response;
+        xmlHttp.send(null);
+      }       
+        // you may have to play with this value, big pages need more porcessing time, and hence
+        // a longer timeout
+        setTimeout("process()",6000);
     }
     
     // Call the init function as soon as the page loads
