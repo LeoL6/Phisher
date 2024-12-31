@@ -2,7 +2,7 @@
 Phishing firmware for the ESP32
 (DESIGNED FOR EDUCATIONAL PURPOSES)
 
-To change admin User and Password just go to the `portal.h` file and change them.
+To change Admin User and Password just go to the `portal.h` file and change them.
 
 ````
 // ADMIN PAGE
