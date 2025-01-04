@@ -10,7 +10,7 @@ Phishing firmware for the ESP32 using:
 **DESIGNED FOR EDUCATIONAL PURPOSES**
 
 # Captive Portal
-Main Captive Portal ( It is extremely easy to change this html to whatever page you want )
+Main Captive Portal ( It is extremely easy to change this html to whatever page source you want )
 
 ![Google Login Portal](https://github.com/user-attachments/assets/8c280ccd-db60-46c7-9ba9-daaac468b154)
 
@@ -24,6 +24,6 @@ const char *apass = "password";
 ````
 
 # Admin Panel
-Reachable from captive portal on any device using specific logins
+Reachable from the captive portal, from any device using specific login details
 
 ![Phisher Admin Panel](https://github.com/user-attachments/assets/a5a399ea-a1c1-4f2e-877a-210a160d23cf)
