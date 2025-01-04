@@ -5,6 +5,7 @@ Phishing firmware for the ESP32 using:
 * DNS Server 
 * [WebSockets](https://github.com/Links2004/arduinoWebSockets/tree/master)
 * [ArduinoJson](https://github.com/bblanchon/ArduinoJson)
+* [LinkedList](https://github.com/ivanseidel/LinkedList/)
 
 **DESIGNED FOR EDUCATIONAL PURPOSES**
 
