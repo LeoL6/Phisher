@@ -26,4 +26,4 @@ const char *apass = "password";
 # Admin Panel
 Reachable from captive portal on any device using specific logins
 
-![Phisher Admin Panel](https://github.com/user-attachments/assets/b05e9b16-f681-427f-827d-fe42f3532a70)
+![Phisher Admin Panel](https://github.com/user-attachments/assets/a5a399ea-a1c1-4f2e-877a-210a160d23cf)
