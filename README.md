@@ -27,3 +27,14 @@ const char *apass = "password";
 Reachable from the captive portal, from any device using specific login details
 
 ![Phisher Admin Panel](https://github.com/user-attachments/assets/a5a399ea-a1c1-4f2e-877a-210a160d23cf)
+
+# Console Mockup
+Console logging for the LCD screen on the M5StickCPlus2 (I will mention that you can run the firmware in headless mode, which would have no physical graphics.)
+
+In `console.h` file
+````
+// Set to false if you want to see the LCD Console.
+#define HEADLESS true
+````
+
+![Console Mockup](https://github.com/user-attachments/assets/a121162a-2272-4080-99bc-7f1c5219ff88)
