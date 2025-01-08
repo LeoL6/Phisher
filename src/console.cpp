@@ -1,6 +1,7 @@
 #include "console.h"
 
 Console::Console() {
+  if (!HEADLESS) {
     screenWidth = 240; //tft.width();                       // Default screen width
     screenHeight = 135; //tft.height();                     // Default screen height
     maxLines = (screenHeight - 28) / (TEXT_SCALE * 8);   // Estimate lines based on text size
@@ -8,19 +9,24 @@ Console::Console() {
     tft.setTextColor(TFT_WHITE);
     tft.setTextDatum(middle_center);
     tft.setTextFont(&fonts::Font0);
+  }
 }
 
 void Console::log(const String& message) { // IMPLEMENT CUSTOM COLORS FOR EACH MESSAGE AS A SECONDARY METHOD ASWELL
+  if (!HEADLESS) {
     if (messages.size() >= maxLines) {
         messages.pop_front(); // Remove the oldest message
     }
     messages.push_back(message); // Add the new message
     drawConsole();
+  }
 }
 
 void Console::clear() {
+  if (!HEADLESS) {
     messages.clear();
     tft.fillScreen(TFT_BLACK); // Clear the screen
+  }
 }
 
 void Console::drawConsole() {

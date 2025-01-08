@@ -20,7 +20,7 @@ void setupWifi(const char *ssid, const IPAddress &localIP, const IPAddress &gate
   Serial.print("AP IP address: ");
   Serial.println(myIP);
 
-  console.log("AP IP: " + (String) myIP);
+  console.log("AP IP: " + myIP.toString());
 }
 
 void setupDNSServer(DNSServer &dnsServer, const IPAddress &localIP) {

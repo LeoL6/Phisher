@@ -5,7 +5,9 @@
 
 #include <deque>
 
+#define HEADLESS false
 #define TEXT_SCALE 1.2
+
 #define tft M5.Lcd
 
 class Console {
