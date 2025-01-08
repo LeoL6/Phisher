@@ -28,7 +28,7 @@ Reachable from the captive portal, from any device using specific login details
 
 ![Phisher Admin Panel](https://github.com/user-attachments/assets/a5a399ea-a1c1-4f2e-877a-210a160d23cf)
 
-# Console Mockup
+# Console Logging
 Console logging for the LCD screen on the M5StickCPlus2 (I will mention that you can run the firmware in headless mode, which would have no physical graphics.)
 
 In `console.h` file
