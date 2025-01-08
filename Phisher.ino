@@ -2,9 +2,6 @@
  
 void setup() {
   global_setup();
-
-  tft.setCursor((tft.width() / 2) - (tft.textWidth("Click to open portal") / 2), (tft.height()/2) - 12);
-  tft.print("Click to open portal");
 }
  
 void loop() {
@@ -15,16 +12,10 @@ void loop() {
       openPortal();
     } else {
       closePortal();
-
-      tft.setCursor((tft.width() / 2) - (tft.textWidth("Click to open portal") / 2), (tft.height()/2) - 12);
-      tft.print("Click to open portal");
     }
   }
 
   if(isPortalOpen()) {
     portalLoop();
-
-    tft.setCursor((tft.width() / 2) - (tft.textWidth("Click to close portal") / 2), (tft.height()/2) - 12);
-    tft.print("Click to close portal");
   }
 }

