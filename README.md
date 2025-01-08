@@ -7,7 +7,7 @@ Phishing firmware for the ESP32 using:
 * [ArduinoJson](https://github.com/bblanchon/ArduinoJson)
 * [LinkedList](https://github.com/ivanseidel/LinkedList/)
 
-**DESIGNED FOR EDUCATIONAL PURPOSES**
+**DEVELOPED FOR EDUCATIONAL PURPOSES**
 
 # Captive Portal
 Main Captive Portal ( It is extremely easy to change this html to whatever page source you want )
