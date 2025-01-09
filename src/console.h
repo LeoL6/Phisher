@@ -14,13 +14,13 @@ class Console {
 public:
     Console();
     void log(const String& message); // Adds a new log message
-    void clear();                         // Clears all log messages
+    void clear();                    // Clears all log messages
 
 private:
-    void drawConsole();                   // Renders logs to the screen
+    void drawConsole();              // Renders logs to the screen
 
     int screenWidth, screenHeight, textSize, maxLines;
-    std::deque<String> messages;          // Stores log messages
+    std::deque<String> messages;     // Stores log messages
 };
 
 #endif // CONSOLE_H

@@ -2,8 +2,8 @@
 
 Console::Console() {
   if (!HEADLESS) {
-    screenWidth = 240; //tft.width();                       // Default screen width
-    screenHeight = 135; //tft.height();                     // Default screen height
+    screenWidth = 240; //tft.width();                    // Default screen width
+    screenHeight = 135; //tft.height();                  // Default screen height
     maxLines = (screenHeight - 28) / (TEXT_SCALE * 8);   // Estimate lines based on text size
     tft.setRotation(1);
     tft.setTextColor(TFT_WHITE);

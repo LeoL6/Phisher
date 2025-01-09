@@ -13,8 +13,6 @@
 
 // Define Struct for User
 typedef struct User {
-  // const char *email;
-  // const char *pass;
   String email;
   String pass;
 } User;
