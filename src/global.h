@@ -9,7 +9,8 @@
 void global_setup();
 void global_loop();
 
-void openPortalSSID(const char *ssid);
+// void openPortalSSID(const char *ssid);
+void openPortalSSID(String ssid);
 void openPortal();
 void closePortal();
 void portalLoop();
