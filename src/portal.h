@@ -98,20 +98,10 @@ const char ADMIN_PAGE[] PROGMEM = R"=====(
       line-height: 50px;
       padding-left: 20px;
     }
-   .navheading {
-     position: fixed;
-     left: 60%;
-     height: 50px;
-     font-family: "Verdana", "Arial", sans-serif;
-     font-size: 20px;
-     font-weight: bold;
-     line-height: 20px;
-     padding-right: 20px;
-   }
    .navdata {
       justify-content: flex-end;
       position: fixed;
-      left: 70%;
+      left: 75%;
       height: 50px;
       font-family: "Verdana", "Arial", sans-serif;
       font-size: 20px;
@@ -141,6 +131,12 @@ const char ADMIN_PAGE[] PROGMEM = R"=====(
     #btn0 {
       background-color: #f50a0a;
       color: white;
+    }
+    #battery-button {
+      justify-content: flex-end;
+      position: fixed;
+      left: 75%;
+      padding: 8px 16px;
     }
     .btn {
       background-color: #444444;
@@ -189,6 +185,8 @@ const char ADMIN_PAGE[] PROGMEM = R"=====(
           <div class="container">
             <div class="navtitle">Control Panel</div>
           
+            <button type="button" class = "btn" id = "battery-button" onclick="fetchBattery()">BATTERY _%</button>
+
           </div>
       </div>
     </header>
@@ -281,13 +279,16 @@ const char ADMIN_PAGE[] PROGMEM = R"=====(
 
     // Called when a message is received from the server
     function onMessage(evnt) {
-
         // Print out our received message
         console.log("Received: " + evnt.data);
 
 		var jsonData = JSON.parse(evnt.data);
         
-        insertCreds(jsonData.email, jsonData.password);
+        if (jsonData.hasOwnProperty("battery")) {
+        	updateBattery(jsonData.battery);
+        } else {
+            insertCreds(jsonData.email, jsonData.password);
+        }
 
         // Update Cred-Table with new Credentials
 		//const userCreds = evnt.data.split(":"); 
@@ -354,6 +355,14 @@ const char ADMIN_PAGE[] PROGMEM = R"=====(
       console.log(JSON.stringify(message));
     }
 
+    function fetchBattery() {    
+      const message = {
+        action: "batteryCheck"
+      };
+      sendWSMessage(JSON.stringify(message));
+      console.log(JSON.stringify(message));
+    }
+
 	function insertCreds(username, password){
       var parenttbl = document.getElementById("cred-table");
 
@@ -376,6 +385,12 @@ const char ADMIN_PAGE[] PROGMEM = R"=====(
       newel.appendChild(passTd);
       
       newel.className = "cred-row";
+    }
+    
+    function updateBattery(batteryLevel) {
+    	var batteryButton = document.getElementById("battery-button");
+        
+        batteryButton.innerHTML = "Battery " + batteryLevel + "%";
     }
     
     // Call the init function as soon as the page loads

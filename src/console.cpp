@@ -9,15 +9,39 @@ Console::Console() {
     tft.setTextColor(TFT_WHITE);
     tft.setTextDatum(middle_center);
     tft.setTextFont(&fonts::Font0);
+  } else {
+    tft.sleep();
   }
 }
 
-void Console::log(const String& message) { // IMPLEMENT CUSTOM COLORS FOR EACH MESSAGE AS A SECONDARY METHOD ASWELL
+void Console::log(const String& logText, LogType logType) {
   if (!HEADLESS) {
-    if (messages.size() >= maxLines) {
-        messages.pop_front(); // Remove the oldest message
+    // Calculate line height of current message
+    int backLineHeight = std::max(1, (int) std::ceil(logText.length() / (double) MAX_CHARS_PER_LINE));
+
+    while (maxLines < backLineHeight && !messages.empty()) {
+        // Calculate line height of message at from of dequeue
+        int frontLineHeight = std::max(1, (int) std::ceil(messages.front().text.length() / (double) MAX_CHARS_PER_LINE));
+
+        // Remove old messages
+        messages.pop_front();
+
+        // Reclaim lines from old messages
+        maxLines += frontLineHeight;
     }
-    messages.push_back(message); // Add the new message
+
+    // Remove lines from current message
+    maxLines -= backLineHeight;
+
+    // Create new message
+    LogMessage message;
+    message.text = logText;
+    message.logType = logType;
+
+    // Add the new message 
+    messages.push_back(message);
+
+    // Draw the console with the updates lines
     drawConsole();
   }
 }
@@ -31,12 +55,13 @@ void Console::clear() {
 
 void Console::drawConsole() {
     tft.fillScreen(TFT_BLACK); // Clear the screen
-
+    
     tft.setTextSize(1.8);
 
     const bool portalOpen = isPortalOpen();
 
     tft.setCursor(5, 15);
+    tft.setTextColor(TFT_WHITE);
     tft.print(portalOpen ? "Click to close portal" : "Click to open portal");
 
     tft.fillRoundRect(screenWidth - 20, 10, 10, 10, 4, portalOpen ? TFT_GREEN : TFT_RED);
@@ -48,8 +73,14 @@ void Console::drawConsole() {
 
     int y = 35;
     for (const auto& message : messages) {
+        const String msg = "$" + getSSID() + " - " +  message.text;
+
         tft.setCursor(5, y);
-        tft.print("$" + getSSID() + " - " +  message);
-        y += TEXT_SCALE * 8; // Move to the next line
+        tft.setTextColor(static_cast<int>(message.logType));
+        tft.print(msg);
+
+        int spacing = std::max(1.0, std::ceil(msg.length() / (double) MAX_CHARS_PER_LINE));
+
+        y += spacing * TEXT_SCALE * 8; // Move to the next line
     }
 }

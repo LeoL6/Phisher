@@ -10,7 +10,7 @@ void global_setup() {
 
   Console console;
 
-  console.log("System Initialized");
+  console.log("System Initialized", Console::LogType::INFO);
 }
 
 void global_loop() {
