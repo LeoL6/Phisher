@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="340" viewBox="0 0 1200 340" role="img" aria-label="Phisher — A public Wi-Fi security-awareness demonstration">
+<title>Phisher</title>
+<defs><radialGradient id="glow" cx="22%" cy="48%" r="46%"><stop offset="0" stop-color="#ffffff" stop-opacity="0.06"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></radialGradient></defs>
+<rect x="1" y="1" width="1198" height="338" rx="18" fill="#121212" stroke="#2a2a2a" stroke-width="2"/>
+<rect x="1" y="1" width="1198" height="338" rx="18" fill="url(#glow)"/>
+<g transform="translate(70,40)">
+<path d="M156.0,128.1 A34,34 0 0 1 208.0,128.1" fill="none" stroke="#EDEDED" stroke-width="2.4" stroke-linecap="round"/>
+<path d="M136.0,111.4 A60,60 0 0 1 228.0,111.4" fill="none" stroke="#9a9a9a" stroke-width="2.2" stroke-linecap="round"/>
+<path d="M116.1,94.7 A86,86 0 0 1 247.9,94.7" fill="none" stroke="#5e5e5e" stroke-width="2.0" stroke-linecap="round"/>
+<circle cx="182" cy="150" r="6" fill="#EDEDED"/>
+<path d="M182,156 L182,202 A16,16 0 1 1 160,202" fill="none" stroke="#E08600" stroke-width="3" stroke-linecap="round"/>
+<path d="M160,202 l6,-9 M160,202 l9,2" fill="none" stroke="#E08600" stroke-width="3" stroke-linecap="round"/>
+
+</g>
+<rect x="500" y="78" width="214" height="32" rx="16" fill="none" stroke="#E08600" stroke-width="1.5"/>
+<text x="607" y="99" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="15" font-weight="700" letter-spacing="2.5" fill="#E08600">SECURITY RESEARCH</text>
+<text x="496" y="182" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="68" font-weight="800" letter-spacing="-1.5" fill="#F2F2F2">Phisher</text>
+<text x="500" y="224" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="23" fill="#B5B5B5">A public Wi-Fi security-awareness demonstration</text>
+<text x="500" y="266" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="15.5" fill="#7A7A7A">ESP32 · C++ · captive portal · WebSockets</text>
+</svg>
